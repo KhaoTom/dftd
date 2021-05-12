@@ -1,5 +1,6 @@
 canvasWidth = 640
 canvasHeight = 350
+canvasVerticalScale = 2.74
 textCanvasWidth = 640*2
 textCanvasHeight = 350*2.74
 
@@ -11,6 +12,7 @@ cFF=1
 
 cellWidth = 15
 wallWidth = 5
+doorWidth = 3
 
 function initTitleScreen(cgfx)
   love.graphics.setCanvas(cgfx)
@@ -33,14 +35,15 @@ function drawMap(cgfx, map)
   love.graphics.clear(c55,0,0,1)
   
   love.graphics.setLineStyle( "rough" )
-  love.graphics.setLineWidth( wallWidth )
   
-  love.graphics.setColor(cAA, cFF, cFF)
-  
-  for y=1,5 do
-    for x=1,5 do
+  for y=1,9 do
+    for x=1,9 do
       cell = map:getCell(x,y)
       if cell == "#" then
+        
+        love.graphics.setLineWidth( wallWidth )
+        love.graphics.setColor(cAA, cAA, cAA)
+        
         drawWallCenter(x, y)
         -- check neighbors and draw as appropriate
         neighbors = {{x+1,y}, {x-1,y}, {x,y+1}, {x,y-1}}
@@ -54,9 +57,16 @@ function drawMap(cgfx, map)
             drawWallToDoorSegment(x, y, nx, ny)
           end
         end
+      elseif cell == "+" then
+        love.graphics.setLineWidth( doorWidth )
+        love.graphics.setColor(cFF, cAA, c55)
+        
+        drawDoor(x,y, map:getCell(x,y+1) == "#")
       end
     end
   end
+  
+  love.graphics.print("Hello, World!", 5)
   
   love.graphics.setCanvas()
 end
@@ -80,3 +90,12 @@ function drawWallToDoorSegment(x1, y1, x2, y2)
     love.graphics.line(x1 * cellWidth, y1 * cellWidth, x2 * cellWidth, y2 * cellWidth + cellWidth/2)
   end
 end
+
+function drawDoor(x, y, isVertical)
+  if isVertical then
+    love.graphics.line(x * cellWidth, y * cellWidth - cellWidth/2, x * cellWidth, y * cellWidth + cellWidth/2)
+  else
+    love.graphics.line(x * cellWidth - cellWidth/2, y * cellWidth, x * cellWidth + cellWidth/2, y * cellWidth)
+  end
+end
+
