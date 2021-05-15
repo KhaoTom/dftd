@@ -10,7 +10,7 @@ c55=0.333
 cAA=0.666
 cFF=1
 
-cellWidth = 15
+cellWidth = 30
 wallWidth = 5
 doorWidth = 3
 
