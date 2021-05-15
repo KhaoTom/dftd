@@ -39,6 +39,10 @@ function drawMap(cgfx, map, diameter)
   for y=1,diameter do
     for x=1,diameter do
       cell = map:getCell(x,y)
+--      love.graphics.print(cell or " ", x * 14 + 5, y * 14 + 150)
+--      if x == 4 and y == 4 then
+--        love.graphics.print("x", x * 14 + 5, y * 14 + 150)
+--      end
       if cell == "#" then
         
         love.graphics.setLineWidth( wallWidth )
@@ -66,7 +70,7 @@ function drawMap(cgfx, map, diameter)
     end
   end
   
-  love.graphics.print("x", (diameter+1) / 2 * cellWidth - cellWidth/2, (diameter+1) / 2 * cellWidth - cellWidth/2 )
+  love.graphics.print("x", (diameter+1) / 2 * cellWidth - 3, (diameter+1) / 2 * cellWidth - 4)
   
   love.graphics.setCanvas()
 end

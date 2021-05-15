@@ -65,6 +65,7 @@ end
 
 
 function setVisibility(map, centerX, centerY)
+  map.cells[makeIndex(centerX, centerY)] = "x"
   -- check north
   if map:cellBlocksVision(centerX, centerY-1) then
     map:clearCell(centerX-1, centerY-2)
@@ -116,12 +117,18 @@ function setVisibility(map, centerX, centerY)
     map:clearCell(centerX-3, centerY-2)
     map:clearCell(centerX-2, centerY-2)
   end
+  if map:cellBlocksVision(centerX-1, centerY-1) then
+    map:clearCell(centerX-3, centerY-3)
+  end
   -- check southwest
   if map:cellBlocksVision(centerX-2, centerY+1) or map:cellBlocksVision(centerX-1, centerY+2) then
     map:clearCell(centerX-3, centerY+3)
     map:clearCell(centerX-2, centerY+3)
     map:clearCell(centerX-3, centerY+2)
     map:clearCell(centerX-2, centerY+2)
+  end
+  if map:cellBlocksVision(centerX-1, centerY+1) then
+    map:clearCell(centerX-3, centerY+3)
   end
   -- check northeast
   if map:cellBlocksVision(centerX+2, centerY-1) or map:cellBlocksVision(centerX+1, centerY-2) then
@@ -130,11 +137,17 @@ function setVisibility(map, centerX, centerY)
     map:clearCell(centerX+3, centerY-2)
     map:clearCell(centerX+2, centerY-2)
   end
+  if map:cellBlocksVision(centerX+1, centerY-1) then
+    map:clearCell(centerX+3, centerY-3)
+  end
   -- check southeast
   if map:cellBlocksVision(centerX+2, centerY+1) or map:cellBlocksVision(centerX+1, centerY+2) then
     map:clearCell(centerX+3, centerY+3)
     map:clearCell(centerX+2, centerY+3)
     map:clearCell(centerX+3, centerY+2)
     map:clearCell(centerX+2, centerY+2)
+  end
+  if map:cellBlocksVision(centerX+1, centerY+1) then
+    map:clearCell(centerX+3, centerY+3)
   end
 end

@@ -6,12 +6,12 @@ egacanvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
 egacanvas:setFilter('linear','nearest')
 
 playerPos = {}
-playerPos.x = 4
+playerPos.x = 8
 playerPos.y = 4
   
 function love.load()
   -- setup
-  normalFont = love.graphics.newFont("/gfx/Mx437_IBM_EGA_9x14.ttf", 14, "mono", 16)
+  normalFont = love.graphics.newFont("/gfx/Mx437_IBM_EGA_9x14.ttf", 14, "none", 16)
   love.graphics.setFont(normalFont)
   loadMapFile("e1m1.txt")
   drawPlayerView()
@@ -43,6 +43,6 @@ end
 
 function drawPlayerView()
   view = getMapSubsection(currentMap, playerPos.x, playerPos.y, 3)
-  setVisibility(view, playerPos.x, playerPos.y)
+  setVisibility(view, 4, 4)
   drawMap(egacanvas, view, 7)
 end
