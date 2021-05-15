@@ -10,7 +10,8 @@ function love.load()
   normalFont = love.graphics.newFont("/gfx/Mx437_IBM_EGA_9x14.ttf", 14, "none", 16)
   love.graphics.setFont(normalFont)
   loadMapFile("e1m1.txt")
-  drawMap(egacanvas, currentMap)
+  view = getMapSubsection(currentMap, 2, 2, 3)
+  drawMap(egacanvas, view, 7)
 end
 
 

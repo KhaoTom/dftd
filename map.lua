@@ -5,12 +5,19 @@ end
 
 Map = {cells = {}}
 
+function Map:new (o)
+  o = o or {}
+  setmetatable(o, self)
+  self.__index = self
+  return o
+end
+
 function Map:getCell(x, y)
   return self.cells[makeIndex(x,y)]
 end
 
 
-currentMap = Map
+currentMap = Map:new()
 
 
 function loadMapFile(file)
@@ -29,4 +36,21 @@ function loadMapFile(file)
     x = 1
   end
   currentMap.cells = cells
+end
+
+
+function getMapSubsection(map, centerX, centerY, radius)
+  local newMap = Map:new()
+  local cx = 1
+  local cy = 1
+  
+  for y = centerY - radius, centerY + radius do
+    for x = centerX - radius, centerX + radius do
+      newMap.cells[makeIndex(cx, cy)] = map:getCell(x,y)
+      cx = cx + 1
+    end
+    cy = cy + 1
+    cx = 1
+  end
+  return newMap
 end

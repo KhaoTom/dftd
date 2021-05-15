@@ -30,14 +30,14 @@ function initTitleScreen(cgfx)
   love.graphics.setCanvas()
 end
 
-function drawMap(cgfx, map)
+function drawMap(cgfx, map, diameter)
   love.graphics.setCanvas(cgfx)
   love.graphics.clear(c55,0,0,1)
   
   love.graphics.setLineStyle( "rough" )
   
-  for y=1,9 do
-    for x=1,9 do
+  for y=1,diameter do
+    for x=1,diameter do
       cell = map:getCell(x,y)
       if cell == "#" then
         
