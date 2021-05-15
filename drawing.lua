@@ -66,7 +66,7 @@ function drawMap(cgfx, map, diameter)
     end
   end
   
-  love.graphics.print("Hello, World!", 5)
+  love.graphics.print("x", (diameter+1) / 2 * cellWidth - cellWidth/2, (diameter+1) / 2 * cellWidth - cellWidth/2 )
   
   love.graphics.setCanvas()
 end
