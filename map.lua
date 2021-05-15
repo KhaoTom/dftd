@@ -16,6 +16,14 @@ function Map:getCell(x, y)
   return self.cells[makeIndex(x,y)]
 end
 
+function Map:cellBlocksVision(x, y)
+  cell = self.cells[makeIndex(x,y)]
+  return cell == "#" or cell == "+"
+end
+
+function Map:clearCell(x, y)
+  self.cells[makeIndex(x,y)] = nil
+end
 
 currentMap = Map:new()
 
@@ -53,4 +61,80 @@ function getMapSubsection(map, centerX, centerY, radius)
     cx = 1
   end
   return newMap
+end
+
+
+function setVisibility(map, centerX, centerY)
+  -- check north
+  if map:cellBlocksVision(centerX, centerY-1) then
+    map:clearCell(centerX-1, centerY-2)
+    map:clearCell(centerX,   centerY-2)
+    map:clearCell(centerX+1, centerY-2)
+    map:clearCell(centerX-2, centerY-3)
+    map:clearCell(centerX-1, centerY-3)
+    map:clearCell(centerX,   centerY-3)
+    map:clearCell(centerX+1, centerY-3)
+    map:clearCell(centerX+2, centerY-3)
+  end
+  -- check west
+  if map:cellBlocksVision(centerX-1, centerY) then
+    map:clearCell(centerX-2, centerY-1)
+    map:clearCell(centerX-2, centerY)
+    map:clearCell(centerX-2, centerY+1)
+    map:clearCell(centerX-3, centerY-2)
+    map:clearCell(centerX-3, centerY-1)
+    map:clearCell(centerX-3, centerY)
+    map:clearCell(centerX-3, centerY+1)
+    map:clearCell(centerX-3, centerY+2)
+  end
+  -- check south
+  if map:cellBlocksVision(centerX, centerY+1) then
+    map:clearCell(centerX-1, centerY+2)
+    map:clearCell(centerX,   centerY+2)
+    map:clearCell(centerX+1, centerY+2)
+    map:clearCell(centerX-2, centerY+3)
+    map:clearCell(centerX-1, centerY+3)
+    map:clearCell(centerX,   centerY+3)
+    map:clearCell(centerX+1, centerY+3)
+    map:clearCell(centerX+2, centerY+3)
+  end
+  -- check east
+  if map:cellBlocksVision(centerX+1, centerY) then
+    map:clearCell(centerX+2, centerY-1)
+    map:clearCell(centerX+2, centerY)
+    map:clearCell(centerX+2, centerY+1)
+    map:clearCell(centerX+3, centerY-2)
+    map:clearCell(centerX+3, centerY-1)
+    map:clearCell(centerX+3, centerY)
+    map:clearCell(centerX+3, centerY+1)
+    map:clearCell(centerX+3, centerY+2)
+  end
+  -- check northwest
+  if map:cellBlocksVision(centerX-2, centerY-1) or map:cellBlocksVision(centerX-1, centerY-2) then
+    map:clearCell(centerX-3, centerY-3)
+    map:clearCell(centerX-2, centerY-3)
+    map:clearCell(centerX-3, centerY-2)
+    map:clearCell(centerX-2, centerY-2)
+  end
+  -- check southwest
+  if map:cellBlocksVision(centerX-2, centerY+1) or map:cellBlocksVision(centerX-1, centerY+2) then
+    map:clearCell(centerX-3, centerY+3)
+    map:clearCell(centerX-2, centerY+3)
+    map:clearCell(centerX-3, centerY+2)
+    map:clearCell(centerX-2, centerY+2)
+  end
+  -- check northeast
+  if map:cellBlocksVision(centerX+2, centerY-1) or map:cellBlocksVision(centerX+1, centerY-2) then
+    map:clearCell(centerX+3, centerY-3)
+    map:clearCell(centerX+2, centerY-3)
+    map:clearCell(centerX+3, centerY-2)
+    map:clearCell(centerX+2, centerY-2)
+  end
+  -- check southeast
+  if map:cellBlocksVision(centerX+2, centerY+1) or map:cellBlocksVision(centerX+1, centerY+2) then
+    map:clearCell(centerX+3, centerY+3)
+    map:clearCell(centerX+2, centerY+3)
+    map:clearCell(centerX+3, centerY+2)
+    map:clearCell(centerX+2, centerY+2)
+  end
 end
