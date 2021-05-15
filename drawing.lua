@@ -13,26 +13,24 @@ cFF=1
 cellWidth = 30
 wallWidth = 5
 doorWidth = 3
+diameter = 7
 
-function initTitleScreen(cgfx)
+function drawGameText(cgfx)
   love.graphics.setCanvas(cgfx)
-  love.graphics.clear(c55,0,0,1)
   
-  love.graphics.setLineStyle( "rough" )
-  love.graphics.setLineWidth( 3 )
-  
-  love.graphics.setColor(c55, c55, cAA)
-  love.graphics.line(10, 10, 630, 340)
-  
-  love.graphics.setColor(c00, c55, cAA)
-  love.graphics.line(10, 350, 630, 10)
+  love.graphics.setColor(cAA, cAA, cAA)
+  love.graphics.print("Your turn.", 20, 10 + cellWidth * diameter)
   
   love.graphics.setCanvas()
 end
 
-function drawMap(cgfx, map, diameter)
+function drawMap(cgfx, map)
   love.graphics.setCanvas(cgfx)
-  love.graphics.clear(c55,0,0,1)
+  love.graphics.setColor(c55, c00, c00)
+  love.graphics.rectangle("fill",0,0, diameter * cellWidth + wallWidth/2, diameter * cellWidth + wallWidth/2)
+  
+  love.graphics.setColor(c55, cAA, cFF)
+  love.graphics.print("x", (diameter+1) / 2 * cellWidth - 3, (diameter+1) / 2 * cellWidth - 4)
   
   love.graphics.setLineStyle( "rough" )
   
@@ -69,8 +67,6 @@ function drawMap(cgfx, map, diameter)
       end
     end
   end
-  
-  love.graphics.print("x", (diameter+1) / 2 * cellWidth - 3, (diameter+1) / 2 * cellWidth - 4)
   
   love.graphics.setCanvas()
 end
