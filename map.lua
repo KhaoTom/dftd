@@ -21,6 +21,10 @@ function Map:cellBlocksVision(x, y)
   return cell == "#" or cell == "+"
 end
 
+function Map:cellBlocksMovement(x, y)
+  return self.cells[makeIndex(x,y)] == "#"
+end
+
 function Map:clearCell(x, y)
   self.cells[makeIndex(x,y)] = nil
 end

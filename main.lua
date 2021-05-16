@@ -44,8 +44,10 @@ function love.keypressed(key, scancode, isrepeat)
     love.event.push("quit", 0)
     return
   end
-   
-  if handlePlayerMove(scancode, playerPos) then
+  
+  moveVector = handlePlayerMove(scancode)
+  if moveVector then
+    tryMove(playerPos, moveVector)
     drawPlayerView()
     return
   end
@@ -56,4 +58,12 @@ function drawPlayerView()
   view = getMapSubsection(currentMap, playerPos.x, playerPos.y, 3)
   setVisibility(view, 4, 4)
   drawMap(egacanvas, view)
+end
+
+
+function tryMove(fromPos, dirVector)
+  if not currentMap:cellBlocksMovement(fromPos.x + dirVector.x, fromPos.y + dirVector.y) then
+    playerPos.x = playerPos.x + dirVector.x*2
+    playerPos.y = playerPos.y + dirVector.y*2
+  end
 end

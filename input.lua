@@ -4,22 +4,25 @@ function handleQuit()
   end
 end
 
-function handlePlayerMove(scancode, playerPos)
+function handlePlayerMove(scancode)
+  outVector = {}
+  outVector.x = 0
+  outVector.y = 0
   if scancode == "d" then
-    playerPos.x = playerPos.x + 2
-    return true
+    outVector.x = 1
+    return outVector
   end
   if scancode == "a" then
-    playerPos.x = playerPos.x - 2
-    return true
+    outVector.x =  -1
+    return outVector
   end
   if scancode == "w" then
-    playerPos.y = playerPos.y - 2
-    return true
+    outVector.y = -1
+    return outVector
   end
   if scancode == "s" then
-    playerPos.y = playerPos.y + 2
-    return true
+    outVector.y = 1
+    return outVector
   end
-  return false
+  return nil
 end
