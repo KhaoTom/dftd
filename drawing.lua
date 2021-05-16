@@ -15,18 +15,27 @@ wallWidth = 5
 doorWidth = 3
 diameter = 7
 
-function drawGameText(cgfx)
+function drawGameText(cgfx, gameText)
   love.graphics.setCanvas(cgfx)
+  love.graphics.setColor(0.06, 0.05, 0.07)
+  love.graphics.rectangle("fill", cellWidth * diameter, 0, canvasWidth - cellWidth * diameter, canvasHeight)
+  love.graphics.rectangle("fill", 0, cellWidth * diameter, cellWidth * diameter, canvasHeight - cellWidth * diameter)
   
   love.graphics.setColor(cAA, cAA, cAA)
   love.graphics.print("Your turn.", 20, 10 + cellWidth * diameter)
+  
+  for i=0,3 do
+    love.graphics.print(gameText[1 + i*3], 20 + cellWidth * diameter, 10 + i*32)
+    love.graphics.print(gameText[2 + i*3], 20 + cellWidth * diameter, 24 + i*32)
+    love.graphics.print(gameText[3 + i*3], 120 + cellWidth * diameter, 24 + i*32)
+  end
   
   love.graphics.setCanvas()
 end
 
 function drawMap(cgfx, map)
   love.graphics.setCanvas(cgfx)
-  love.graphics.setColor(c55, c00, c00)
+  love.graphics.setColor(0.06, 0.05, 0.07)
   love.graphics.rectangle("fill",0,0, diameter * cellWidth + wallWidth/2, diameter * cellWidth + wallWidth/2)
   
   love.graphics.setColor(c55, cAA, cFF)

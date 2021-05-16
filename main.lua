@@ -1,6 +1,7 @@
 require "input"
 require "drawing"
 require "map"
+require "character"
 
 egacanvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
 egacanvas:setFilter('linear','nearest')
@@ -8,7 +9,15 @@ egacanvas:setFilter('linear','nearest')
 playerPos = {}
 playerPos.x = 8
 playerPos.y = 4
-  
+
+characters = {
+  Character:new("c1"),
+  Character:new("c2"),
+  Character:new("c3"),
+  Character:new("c4")
+}
+
+
 function love.load()
   -- setup
   normalFont = love.graphics.newFont("/gfx/Mx437_IBM_EGA_9x14.ttf", 14, "none", 16)
@@ -16,13 +25,11 @@ function love.load()
   
   local str = love.filesystem.read('scanline.frag')
   shader = love.graphics.newShader(str)
-  --shader:send('inputSize', {love.graphics.getWidth(), love.graphics.getHeight()})
-  --shader:send('textureSize', {love.graphics.getWidth(), love.graphics.getHeight()})
   shader:send('count', canvasHeight*4)
   
   loadMapFile("e1m1.txt")
   drawPlayerView()
-  drawGameText(egacanvas)
+  drawGameText(egacanvas, getGameText())
 end
 
 
@@ -66,4 +73,16 @@ function tryMove(fromPos, dirVector)
     playerPos.x = playerPos.x + dirVector.x*2
     playerPos.y = playerPos.y + dirVector.y*2
   end
+end
+
+
+function getGameText()
+  gameText = {
+    characters[1].name .. " :", " HP " .. characters[1].hp, "MP " .. characters[1].mp,
+    characters[2].name .. " :", " HP " .. characters[2].hp, "MP " .. characters[2].mp,
+    characters[3].name .. " :", " HP " .. characters[3].hp, "MP " .. characters[3].mp,
+    characters[4].name .. " :", " HP " .. characters[4].hp, "MP " .. characters[4].mp,
+
+  }
+  return gameText
 end
