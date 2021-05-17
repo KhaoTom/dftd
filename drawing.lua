@@ -1,5 +1,6 @@
 canvasWidth = 640
 canvasHeight = 350
+canvasHorizontalScale = 2
 canvasVerticalScale = 2.74
 textCanvasWidth = 640*2
 textCanvasHeight = 350*2.74
@@ -46,7 +47,7 @@ function drawMap(cgfx, map)
   
   for y=1,diameter do
     for x=1,diameter do
-      cell = map:getCell(x,y)
+      local cell = map:getCell(x,y)
 --      love.graphics.print(cell or " ", x * 14 + 5, y * 14 + 150)
 --      if x == 4 and y == 4 then
 --        print(cell)

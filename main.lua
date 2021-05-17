@@ -6,6 +6,10 @@ require "character"
 egacanvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
 egacanvas:setFilter('linear','nearest')
 
+local fullScreen = false
+local drawXscale = canvasHorizontalScale
+local drawYscale = canvasVerticalScale
+
 playerPos = {}
 playerPos.x = 8
 playerPos.y = 4
@@ -41,8 +45,8 @@ end
 function love.draw()
   love.graphics.setShader(shader)
   
-  love.graphics.draw(egacanvas, 0, 0, 0, 2, canvasVerticalScale)
-  
+  love.graphics.draw(egacanvas, 0, 0, 0, drawXscale, drawYscale)
+
   love.graphics.setShader()
 end
 
@@ -58,6 +62,20 @@ function love.keypressed(key, scancode, isrepeat)
     drawPlayerView()
     return
   end
+  
+  if key == "f11" then
+    if not fullScreen then
+      fullScreen = love.window.setFullscreen(true, 'desktop')
+      drawXscale = love.graphics.getWidth() / canvasWidth
+      drawYscale = love.graphics.getHeight() / canvasHeight
+    else
+      love.window.setFullscreen(false)
+      fullScreen = false
+      drawXscale = canvasHorizontalScale
+      drawYscale = canvasVerticalScale
+    end
+  end
+  
 end
 
 
