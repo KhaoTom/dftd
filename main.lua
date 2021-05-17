@@ -29,7 +29,7 @@ function love.load()
   normalFont = love.graphics.newFont("/gfx/Mx437_IBM_EGA_9x14.ttf", 14, "none", 16)
   love.graphics.setFont(normalFont)
   
-  local str = love.filesystem.read('scanline.frag')
+  local str = love.filesystem.read('/gfx/scanline.frag')
   shader = love.graphics.newShader(str)
   shader:send('count', canvasHeight*4)
   
@@ -53,7 +53,7 @@ function love.load()
     Character:new("c4")
   }
   
-  loadMapFile("e1m1.txt")
+  loadMapFile("/maps/e1m1.txt")
   drawPlayerView()
   updateGameText()
   updateStatsText()
