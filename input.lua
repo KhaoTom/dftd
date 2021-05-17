@@ -45,5 +45,5 @@ function handleIncrementDecrement(scancode)
   if scancode == "down" or scancode == "s" or scancode == "j" or scancode == "kp2" then
     return -1
   end
-  return 0
+  return nil
 end
