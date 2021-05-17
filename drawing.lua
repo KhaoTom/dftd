@@ -14,6 +14,7 @@ cellWidth = 30
 wallWidth = 5
 doorWidth = 3
 diameter = 7
+center = 4
 
 function drawGameText(cgfx, gameText)
   love.graphics.setCanvas(cgfx)
@@ -39,7 +40,7 @@ function drawMap(cgfx, map)
   love.graphics.rectangle("fill",0,0, diameter * cellWidth + wallWidth/2, diameter * cellWidth + wallWidth/2)
   
   love.graphics.setColor(c55, cAA, cFF)
-  love.graphics.print("x", (diameter+1) / 2 * cellWidth - 3, (diameter+1) / 2 * cellWidth - 4)
+  love.graphics.print("@", center * cellWidth - 3, center * cellWidth+4)
   
   love.graphics.setLineStyle( "rough" )
   
@@ -48,7 +49,7 @@ function drawMap(cgfx, map)
       cell = map:getCell(x,y)
 --      love.graphics.print(cell or " ", x * 14 + 5, y * 14 + 150)
 --      if x == 4 and y == 4 then
---        love.graphics.print("x", x * 14 + 5, y * 14 + 150)
+--        print(cell)
 --      end
       if cell == "#" then
         
@@ -73,6 +74,12 @@ function drawMap(cgfx, map)
         love.graphics.setColor(cFF, cAA, c55)
         
         drawDoor(x,y, map:getCell(x,y+1) == "#")
+      elseif cell == ">" then
+        love.graphics.setColor(cFF, c55, c55)
+        love.graphics.print("Down", x * cellWidth - cellWidth/2, y * cellWidth - cellWidth/2)
+      elseif cell == "w" or cell == "a" or cell == "g" or cell == "m" or cell == "n" or cell == "t" then
+        love.graphics.setColor(cFF, cAA, c00)
+        love.graphics.print("Shop", x * cellWidth - cellWidth/2, y * cellWidth - cellWidth/2)
       end
     end
   end

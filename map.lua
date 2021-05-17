@@ -69,7 +69,7 @@ end
 
 
 function setVisibility(map, centerX, centerY)
-  map.cells[makeIndex(centerX, centerY)] = "x"
+--  map.cells[makeIndex(centerX, centerY)] = "x"
   -- check north
   if map:cellBlocksVision(centerX, centerY-1) then
     map:clearCell(centerX-1, centerY-2)
