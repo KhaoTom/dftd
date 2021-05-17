@@ -14,6 +14,9 @@ local playerPos
 local characters
 local shader
 local normalFont
+local playerState
+local movePrompt
+local currentShop
 
 function love.load()
   -- setup
@@ -26,6 +29,14 @@ function love.load()
   local str = love.filesystem.read('scanline.frag')
   shader = love.graphics.newShader(str)
   shader:send('count', canvasHeight*4)
+  
+  movePrompt = string.format("Move? (%s,%s,%s,%s)", 
+    love.keyboard.getKeyFromScancode("up"),
+    love.keyboard.getKeyFromScancode("down"),
+    love.keyboard.getKeyFromScancode("left"),
+    love.keyboard.getKeyFromScancode("right"))
+  
+  playerState = "move"
   
   playerPos = {
     x = 8,
@@ -41,7 +52,8 @@ function love.load()
   
   loadMapFile("e1m1.txt")
   drawPlayerView()
-  drawGameText(egacanvas, getGameText())
+  updateGameText()
+  updateStatsText()
 end
 
 
@@ -65,12 +77,6 @@ function love.keypressed(key, scancode, isrepeat)
     return
   end
   
-  moveVector = handlePlayerMove(scancode)
-  if moveVector then
-    doPlayerMove(playerPos, moveVector)
-    drawPlayerView()
-    return
-  end
   
   if scancode == "f11" then
     if not fullScreen then
@@ -86,6 +92,21 @@ function love.keypressed(key, scancode, isrepeat)
     return
   end
   
+  if playerState == "move" then
+    local moveVector = handlePlayerMove(scancode)
+    if moveVector then
+      doPlayerMove(playerPos, moveVector)
+      drawPlayerView()
+      return
+    end
+  elseif playerState == "shopperSelect" then
+    local moveVector = handlePlayerMove(scancode)
+    if moveVector or scancode == "q" or scancode == "kpenter" then
+      playerState = "move"
+      updateGameText()
+    end
+  end
+  
 end
 
 
@@ -95,22 +116,82 @@ function drawPlayerView()
   drawMap(egacanvas, view)
 end
 
+function updateGameText()
+  drawGameText(egacanvas, getGameText())
+end
+
+function updateStatsText()
+  drawStatsText(egacanvas, getStatsText())
+end
 
 function doPlayerMove(fromPos, dirVector)
-  if not currentMap:cellBlocksMovement(fromPos.x + dirVector.x, fromPos.y + dirVector.y) then
-    playerPos.x = playerPos.x + dirVector.x*2
-    playerPos.y = playerPos.y + dirVector.y*2
+  if currentMap:cellBlocksMovement(fromPos.x + dirVector.x, fromPos.y + dirVector.y) then
+    return
+  end
+  
+  -- move
+  playerPos.x = playerPos.x + dirVector.x*2
+  playerPos.y = playerPos.y + dirVector.y*2
+  
+  local cell = currentMap:getCell(playerPos.x, playerPos.y)
+  
+  if isShop(cell) then
+    enterShop(getShopType(cell))
+    updateGameText()
   end
 end
 
 
-function getGameText()
-  gameText = {
+function getShopType(cell)
+  if cell == "w" then
+    return "weapon"
+  elseif cell == "a" then
+    return "armor"
+  elseif cell == "g" then 
+    return "gem"
+  elseif cell == "m" then 
+    return "magic"
+  elseif cell == "n" then 
+    return "necromancy"
+  elseif cell == "t" then 
+    return "training"
+  end
+  return nil
+end
+
+function enterShop(shopType)
+  playerState = "shopperSelect"
+  currentShop = shopType
+end
+
+
+function makeShopperSelectPrompt()
+  local shopPrompt = string.format("Welcome to the %s shop! Who is shopping? (%s,%s,%s,%s,%s)",
+      currentShop,
+      love.keyboard.getKeyFromScancode("1"),
+      love.keyboard.getKeyFromScancode("2"),
+      love.keyboard.getKeyFromScancode("3"),
+      love.keyboard.getKeyFromScancode("4"),
+      love.keyboard.getKeyFromScancode("q"))
+  return shopPrompt
+end
+
+function getStatsText()
+  local statsText = {
     characters[1].name .. " :", " HP " .. characters[1].hp, "MP " .. characters[1].mp,
     characters[2].name .. " :", " HP " .. characters[2].hp, "MP " .. characters[2].mp,
     characters[3].name .. " :", " HP " .. characters[3].hp, "MP " .. characters[3].mp,
     characters[4].name .. " :", " HP " .. characters[4].hp, "MP " .. characters[4].mp,
-
   }
+  return statsText
+end
+
+function getGameText()
+  local gameText = {}
+  if playerState == "move" then
+    table.insert(gameText, movePrompt)
+  elseif playerState == "shopperSelect" then
+    table.insert(gameText, makeShopperSelectPrompt())
+  end
   return gameText
 end

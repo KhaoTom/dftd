@@ -35,8 +35,7 @@ function Map:clearCell(x, y)
 end
 
 function Map:cellIsShop(x, y)
-  local cell = self.cells[makeIndex(x,y)]
-  return isShop(cell), cell
+  return isShop(self.cells[makeIndex(x,y)])
 end
 
 
