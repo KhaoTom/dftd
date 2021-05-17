@@ -8,7 +8,10 @@ Character = {
   hp = 10,
   mp = 5,
   name = "newbie",
-  class = "fighter"
+  class = "fighter",
+  weapon = 0,
+  armor = 0,
+  gem = 0
 }
 
 

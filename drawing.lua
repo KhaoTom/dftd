@@ -36,7 +36,13 @@ function drawGameText(cgfx, gameText)
   love.graphics.rectangle("fill", 0, cellWidth * diameter, canvasWidth, canvasHeight - cellWidth * diameter)
   
   love.graphics.setColor(cAA, cAA, cAA)
-  love.graphics.print(gameText[1], 20, 10 + cellWidth * diameter)
+  
+  local yStart = 10 + cellWidth * diameter
+  local i = 1
+  while gameText[i] do
+    love.graphics.print(gameText[i], 20, yStart + i * 14)
+    i = i + 1
+  end
   
   love.graphics.setCanvas()
 end

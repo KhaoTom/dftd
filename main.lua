@@ -17,6 +17,9 @@ local normalFont
 local playerState
 local movePrompt
 local currentShop
+local currentShopper
+local currentPlusValue
+
 
 function love.load()
   -- setup
@@ -30,7 +33,7 @@ function love.load()
   shader = love.graphics.newShader(str)
   shader:send('count', canvasHeight*4)
   
-  movePrompt = string.format("Move? (%s,%s,%s,%s)", 
+  movePrompt = string.format("Move?\n (%s,%s,%s,%s)", 
     love.keyboard.getKeyFromScancode("up"),
     love.keyboard.getKeyFromScancode("down"),
     love.keyboard.getKeyFromScancode("left"),
@@ -99,14 +102,50 @@ function love.keypressed(key, scancode, isrepeat)
       drawPlayerView()
       return
     end
+    
   elseif playerState == "shopperSelect" then
-    local moveVector = handlePlayerMove(scancode)
-    if moveVector or scancode == "q" or scancode == "kpenter" then
-      playerState = "move"
+    if handleMoveOrCancelKeypress(scancode) then return end
+    local charSelect = handleCharacterSelect(scancode)
+    if charSelect then
+      currentShopper = charSelect
+      playerState = "purchaseSelect"
       updateGameText()
+      return
+    end
+    
+  elseif playerState == "purchaseSelect" then
+    if handleCancelKeypress(scancode) then return end
+    local incdec = handleIncrementDecrement(scancode)
+    if incdec then
+      currentPlusValue = currentPlusValue + incdec
+      if currentPlusValue < 0 then currentPlusValue = 0 end
+      updateGameText()
+      return
     end
   end
   
+end
+
+
+function handleCancelKeypress(scancode)
+  if scancode == "q" or scancode == "kp." then
+    playerState = "move"
+    updateGameText()
+    return true
+  else
+    return false
+  end
+end
+
+function handleMoveOrCancelKeypress(scancode)
+  local moveVector = handlePlayerMove(scancode)
+  if moveVector or scancode == "q" or scancode == "kp." then
+    playerState = "move"
+    updateGameText()
+    return true
+  else
+    return false
+  end
 end
 
 
@@ -160,13 +199,14 @@ function getShopType(cell)
 end
 
 function enterShop(shopType)
+  currentPlusValue = 0
   playerState = "shopperSelect"
   currentShop = shopType
 end
 
 
 function makeShopperSelectPrompt()
-  local shopPrompt = string.format("Welcome to the %s shop! Who is shopping? (%s,%s,%s,%s,%s)",
+  local shopPrompt = string.format("Welcome to the %s shop! Who is shopping?\n (%s, %s, %s, %s, cancel: %s)",
       currentShop,
       love.keyboard.getKeyFromScancode("1"),
       love.keyboard.getKeyFromScancode("2"),
@@ -175,6 +215,25 @@ function makeShopperSelectPrompt()
       love.keyboard.getKeyFromScancode("q"))
   return shopPrompt
 end
+
+
+function makePurchaseSelectPrompt()
+  local ownedEquip
+  if currentShop == "weapon" then 
+    ownedEquip = "Currently wielding: Sword +" .. characters[currentShopper].weapon
+  else
+    ownedEquip = "unhandled shop"
+  end
+  local shopPrompt = string.format("%s.\nHow many pluses to add?\n (inc: %s, dec: %s, buy: %s, cancel: %s)\n +%d",
+    ownedEquip,
+    love.keyboard.getKeyFromScancode("w"),
+    love.keyboard.getKeyFromScancode("s"),
+    love.keyboard.getKeyFromScancode("e"),
+    love.keyboard.getKeyFromScancode("q"),
+    currentPlusValue)
+  return shopPrompt
+end
+
 
 function getStatsText()
   local statsText = {
@@ -192,6 +251,8 @@ function getGameText()
     table.insert(gameText, movePrompt)
   elseif playerState == "shopperSelect" then
     table.insert(gameText, makeShopperSelectPrompt())
+  elseif playerState == "purchaseSelect" then
+    table.insert(gameText, makePurchaseSelectPrompt())
   end
   return gameText
 end
