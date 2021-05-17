@@ -3,6 +3,11 @@ local function makeIndex(x, y)
 end
 
 
+function isShop(cell)
+  return cell == "w" or cell == "a" or cell == "g" or cell == "m" or cell == "n" or cell == "t"
+end
+
+
 Map = {cells = {}}
 
 function Map:new (o)
@@ -28,6 +33,12 @@ end
 function Map:clearCell(x, y)
   self.cells[makeIndex(x,y)] = nil
 end
+
+function Map:cellIsShop(x, y)
+  local cell = self.cells[makeIndex(x,y)]
+  return isShop(cell), cell
+end
+
 
 currentMap = Map:new()
 

@@ -76,7 +76,7 @@ function drawMap(cgfx, map)
       elseif cell == ">" then
         love.graphics.setColor(cFF, c55, c55)
         love.graphics.print("Down", x * cellWidth - cellWidth/2, y * cellWidth - cellWidth/2)
-      elseif cell == "w" or cell == "a" or cell == "g" or cell == "m" or cell == "n" or cell == "t" then
+      elseif isShop(cell) then
         love.graphics.setColor(cFF, cAA, c00)
         love.graphics.print("Shop", x * cellWidth - cellWidth/2, y * cellWidth - cellWidth/2)
       end
