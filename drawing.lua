@@ -2,8 +2,6 @@ canvasWidth = 640
 canvasHeight = 350
 canvasHorizontalScale = 2
 canvasVerticalScale = 2.74
-textCanvasWidth = 640*2
-textCanvasHeight = 350*2.74
 
 -- ega color partials
 c00=0
@@ -11,11 +9,11 @@ c55=0.333
 cAA=0.666
 cFF=1
 
-cellWidth = 30
-wallWidth = 5
-doorWidth = 3
-diameter = 7
-center = 4
+local cellWidth = 30
+local wallWidth = 5
+local doorWidth = 3
+local diameter = 7
+local center = 4
 
 function drawGameText(cgfx, gameText)
   love.graphics.setCanvas(cgfx)

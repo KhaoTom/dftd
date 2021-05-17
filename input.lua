@@ -1,11 +1,6 @@
-function handleQuit()
-  if love.keyboard.isDown("q") then
-    love.event.push("quit", 0)
-  end
-end
 
 function handlePlayerMove(scancode)
-  outVector = {}
+  local outVector = {}
   outVector.x = 0
   outVector.y = 0
   if scancode == "right" or scancode == "d" or scancode == "l" or scancode == "kp6" then

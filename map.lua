@@ -17,7 +17,7 @@ function Map:getCell(x, y)
 end
 
 function Map:cellBlocksVision(x, y)
-  cell = self.cells[makeIndex(x,y)]
+  local cell = self.cells[makeIndex(x,y)]
   return cell == "#" or cell == "+"
 end
 

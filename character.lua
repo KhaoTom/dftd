@@ -13,7 +13,7 @@ Character = {
 
 
 function Character:new (name)
-  o = {}
+  local o = {}
   setmetatable(o, self)
   self.__index = self
   if name then o.name = name end

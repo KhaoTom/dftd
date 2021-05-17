@@ -3,33 +3,41 @@ require "drawing"
 require "map"
 require "character"
 
-egacanvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
-egacanvas:setFilter('linear','nearest')
-
+-- initialized once
 local fullScreen = false
 local drawXscale = canvasHorizontalScale
 local drawYscale = canvasVerticalScale
 
-playerPos = {}
-playerPos.x = 8
-playerPos.y = 4
-
-characters = {
-  Character:new("c1"),
-  Character:new("c2"),
-  Character:new("c3"),
-  Character:new("c4")
-}
-
+-- initialized in love.load
+local egacanvas
+local playerPos
+local characters
+local shader
+local normalFont
 
 function love.load()
   -- setup
+  egacanvas = love.graphics.newCanvas(canvasWidth, canvasHeight)
+  egacanvas:setFilter('linear','nearest')
+  
   normalFont = love.graphics.newFont("/gfx/Mx437_IBM_EGA_9x14.ttf", 14, "none", 16)
   love.graphics.setFont(normalFont)
   
   local str = love.filesystem.read('scanline.frag')
   shader = love.graphics.newShader(str)
   shader:send('count', canvasHeight*4)
+  
+  playerPos = {
+    x = 8,
+    y = 4
+  }
+  
+  characters = {
+    Character:new("c1"),
+    Character:new("c2"),
+    Character:new("c3"),
+    Character:new("c4")
+  }
   
   loadMapFile("e1m1.txt")
   drawPlayerView()
@@ -58,7 +66,7 @@ function love.keypressed(key, scancode, isrepeat)
   
   moveVector = handlePlayerMove(scancode)
   if moveVector then
-    tryMove(playerPos, moveVector)
+    doPlayerMove(playerPos, moveVector)
     drawPlayerView()
     return
   end
@@ -74,6 +82,7 @@ function love.keypressed(key, scancode, isrepeat)
       drawXscale = canvasHorizontalScale
       drawYscale = canvasVerticalScale
     end
+    return
   end
   
 end
@@ -86,7 +95,7 @@ function drawPlayerView()
 end
 
 
-function tryMove(fromPos, dirVector)
+function doPlayerMove(fromPos, dirVector)
   if not currentMap:cellBlocksMovement(fromPos.x + dirVector.x, fromPos.y + dirVector.y) then
     playerPos.x = playerPos.x + dirVector.x*2
     playerPos.y = playerPos.y + dirVector.y*2
