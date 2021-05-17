@@ -59,7 +59,8 @@ function love.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-  if key == "escape" then
+  --print(love.keyboard.getKeyFromScancode( scancode ))
+  if scancode == "escape" then
     love.event.push("quit", 0)
     return
   end
@@ -71,7 +72,7 @@ function love.keypressed(key, scancode, isrepeat)
     return
   end
   
-  if key == "f11" then
+  if scancode == "f11" then
     if not fullScreen then
       fullScreen = love.window.setFullscreen(true, 'desktop')
       drawXscale = love.graphics.getWidth() / canvasWidth
