@@ -77,20 +77,15 @@ function love.keypressed(key, scancode, isrepeat)
   --print(love.keyboard.getKeyFromScancode( scancode ))
   if scancode == "escape" then
     love.event.push("quit", 0)
-    return
-  end
   
-  
-  if scancode == "f11" then
+  elseif scancode == "f11" then
     toggleFullscreen()
-  end
-  
-  if playerState == "move" then
+    
+  elseif playerState == "move" then
     local moveVector = handlePlayerMove(scancode)
     if moveVector then
       doPlayerMove(playerPos, moveVector)
       drawPlayerView()
-      return
     end
     
   elseif playerState == "shopperSelect" then
