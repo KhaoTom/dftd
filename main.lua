@@ -258,5 +258,4 @@ function toggleFullscreen()
     drawXscale = canvasHorizontalScale
     drawYscale = canvasVerticalScale
   end
-  return
 end
