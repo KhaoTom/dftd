@@ -82,17 +82,7 @@ function love.keypressed(key, scancode, isrepeat)
   
   
   if scancode == "f11" then
-    if not fullScreen then
-      fullScreen = love.window.setFullscreen(true, 'desktop')
-      drawXscale = love.graphics.getWidth() / canvasWidth
-      drawYscale = love.graphics.getHeight() / canvasHeight
-    else
-      love.window.setFullscreen(false)
-      fullScreen = false
-      drawXscale = canvasHorizontalScale
-      drawYscale = canvasVerticalScale
-    end
-    return
+    toggleFullscreen()
   end
   
   if playerState == "move" then
@@ -255,4 +245,18 @@ function getGameText()
     table.insert(gameText, makePurchaseSelectPrompt())
   end
   return gameText
+end
+
+function toggleFullscreen()
+  if not fullScreen then
+    fullScreen = love.window.setFullscreen(true, 'desktop')
+    drawXscale = love.graphics.getWidth() / canvasWidth
+    drawYscale = love.graphics.getHeight() / canvasHeight
+  else
+    love.window.setFullscreen(false)
+    fullScreen = false
+    drawXscale = canvasHorizontalScale
+    drawYscale = canvasVerticalScale
+  end
+  return
 end
